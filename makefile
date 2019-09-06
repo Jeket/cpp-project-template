@@ -17,13 +17,13 @@ debug: pre_build $(OBJECT)
 	$(CC) $(OBJECT) $(LDFLAGS) -o $(BINARY_DIR)$(TARGET)Debug
 
 release: pre_build $(OBJECT)
-	$(CC) $(OBJECT) -o $(BINARY_DIR)$(TARGET)
+	$(CC) $(OBJECT) $(LDFLAGS) -o $(BINARY_DIR)$(TARGET)
 
 $(BUILD_DIR)%.o: $(SOURCE_DIR)%.cpp
 	$(CC) -I $(INCLUDE_DIR) $(CXXFLAGS) -c $< -o $@
 
 pre_build:
-	mkdir -p $(BUILD_DIR) $(BINARY_DIR) Build/Core/
+	mkdir -p $(BUILD_DIR) $(BINARY_DIR)
 clean:
 	rm -rf $(BUILD_DIR) $(BINARY_DIR)
 
