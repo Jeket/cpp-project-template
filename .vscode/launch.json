@@ -5,7 +5,7 @@
             "name": "Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Bin/TestDebug",
+            "program": "${workspaceFolder}/Bin/Hello",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

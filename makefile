@@ -1,29 +1,36 @@
-CC := g++
-debug: CXXFLAGS = -std=c++17 -Wall -Wextra -ggdb
-release: CXXFLAGS = -std=c++17 -Wall -Wextra -O1
-LDFLAGS := 
-TARGET := Test
-INCLUDE_DIR := Include/
-SOURCE_DIR := Source/
-BUILD_DIR := Build/
-BINARY_DIR := Bin/
+CC = g++
+CPPFLAGS = -std=c++17 -Wall -Wextra
+LDFLAGS = 
+INCLUDE_DIR = Include/
+SOURCE_DIR = Source/
+BUILD_DIR = Build/
+BINARY_DIR = Bin/
+TARGET = $(BINARY_DIR)Hello
 
-SOURCE := $(shell find $(SOURCE_DIR) -name "*.cpp")
-OBJECT := $(patsubst $(SOURCE_DIR)%.cpp, $(BUILD_DIR)%.o, $(SOURCE))
+SOURCE = $(shell find $(SOURCE_DIR) -name "*.cpp")
+OBJECT = $(patsubst $(SOURCE_DIR)%.cpp, $(BUILD_DIR)%.o, $(SOURCE))
+
+debug: CPPFLAGS += -ggdb
+release: CPPFLAGS += -O1
 
 all: release
 
-debug: pre_build $(OBJECT)
-	$(CC) $(OBJECT) $(LDFLAGS) -o $(BINARY_DIR)$(TARGET)Debug
+release: $(TARGET)
 
-release: pre_build $(OBJECT)
-	$(CC) $(OBJECT) $(LDFLAGS) -o $(BINARY_DIR)$(TARGET)
+debug: $(TARGET)
 
-$(BUILD_DIR)%.o: $(SOURCE_DIR)%.cpp
-	$(CC) -I $(INCLUDE_DIR) $(CXXFLAGS) -c $< -o $@
+$(TARGET): $(OBJECT) | $(BINARY_DIR)
+	$(CC) $(OBJECT) $(LDFLAGS) -o $(TARGET)
 
-pre_build:
-	mkdir -p $(BUILD_DIR) $(BINARY_DIR)
+$(BUILD_DIR)%.o: $(SOURCE_DIR)%.cpp | $(BUILD_DIR)
+	$(CC) -I $(INCLUDE_DIR) $(CPPFLAGS) -c $< -o $@
+
+$(BUILD_DIR):
+	mkdir -p $@
+
+$(BINARY_DIR):
+	mkdir -p $@
+
 clean:
 	rm -rf $(BUILD_DIR) $(BINARY_DIR)
 
